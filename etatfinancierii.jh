@@ -1,0 +1,147 @@
+enum SubventProv {
+    SUBVENTION_D_INVESTISSEMENT, PROVISION_REGLEMENTEE
+}
+/**
+ * ProvisionReglemente entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ */
+entity ProvisionReglemente {
+    type SubventProv
+    nature String
+    regime String
+    echeance Date
+}
+/**
+ * EcartConversionCreance entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ */
+entity EcartConversion {
+    type Type
+    nature String
+    monatant Double
+    pays String
+    echeance Date
+}
+/**
+ * EvaluationBasePrixMarche entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ *        OneToOne avec IntituleEtatFinancier
+ */
+entity EvaluationBasePrixMarche {
+    nature String
+    prixMarche Double
+}
+/**
+ * CreanceEchu entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ *        OneToOne avec IntituleEtatFinancier
+ */
+entity EchuExo {
+    type Type
+    creance String
+    montantPrincipal Double
+    interet Double
+}
+/**
+ * ElementConstitutifPerteGainEchange entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ *        OneToOne avec IntituleEtatFinancier
+ */
+entity ElementConstitutifPerteGainEchange {
+    creance String
+    montant Double
+}
+/**
+ * AnalyseImpotDiffere entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ *        OneToOne avec IntituleEtatFinancier
+ */
+entity AnalyseImpotDiffere {
+    creance String
+    montant Double
+}
+/**
+ * CompteCourantAssocie entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ */
+entity CompteCourantAssocie {
+    nom String
+    prenoms String
+    clauseParticuliere String
+    monatnt Double
+    terme Date
+}
+/**
+ * CreanceLieParticipation entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ */
+entity Participation {
+    type Type 
+    nature String
+    montant Double
+}
+/**
+ * DetailReserve entity.
+ * @author sanda
+ * Relation
+ *     ManyToOne avec EtatFinancier
+ */
+entity DetailReserve {
+    reserveDisponible Double
+    reserveLegale Double
+    reserveStatutaire Double
+    reserveReglementaire Double
+    reserveFacultatif Double
+}
+relationship OneToMany {
+    EtatFinancier to Participation
+}
+relationship OneToMany {
+    EtatFinancier to ProvisionReglemente
+}
+relationship OneToMany {
+    EtatFinancier to EcartConversion
+}
+relationship OneToMany {
+    EtatFinancier to EvaluationBasePrixMarche
+}
+relationship OneToMany {
+    EtatFinancier to EchuExo
+}
+relationship OneToMany {
+    EtatFinancier to CompteCourantAssocie
+}
+relationship OneToMany {
+    EtatFinancier to ElementConstitutifPerteGainEchange
+}
+relationship OneToMany {
+    EtatFinancier to AnalyseImpotDiffere
+}
+relationship OneToMany {
+    EtatFinancier to DetailReserve
+}
+// Set pagination options
+paginate ProvisionReglemente, EcartConversion, EvaluationBasePrixMarche, EchuExo, ElementConstitutifPerteGainEchange, AnalyseImpotDiffere  with infinite-scroll
+paginate CompteCourantAssocie, Participation, DetailReserve with pagination
+// Use Data Transfert Objects (DTO)
+dto ProvisionReglemente, EcartConversion, EvaluationBasePrixMarche, EchuExo, ElementConstitutifPerteGainEchange, AnalyseImpotDiffere, CompteCourantAssocie, Participation, DetailReserve with mapstruct
+// Set service options to all except few
+service all with serviceImpl except EtatFinancier, IntituleEtat, IntituleBilan,  PlanComptable
+// Set an angular suffix
+// angularSuffix * with mySuffix
